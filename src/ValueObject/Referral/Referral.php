@@ -5,21 +5,22 @@ declare(strict_types=1);
 namespace Nebalus\Webapi\ValueObject\Referral;
 
 use DateTime;
+use DateTimeImmutable;
 
 class Referral
 {
-    private int $dbId;
-    private int $dbUserId;
+    private int $referralId;
+    private int $userId;
     private string $code;
     private string $pointer;
     private int $viewCount;
-    private DateTime $creationDate;
+    private DateTimeImmutable $creationDate;
     private bool $enabled;
 
-    private function __construct(int $dbId, int $dbUserId, string $code, string $pointer, int $viewCount, DateTime $creationDate, bool $enabled)
+    private function __construct(int $referralId, int $userId, string $code, string $pointer, int $viewCount, DateTimeImmutable $creationDate, bool $enabled)
     {
-        $this->dbId = $dbId;
-        $this->dbUserId = $dbUserId;
+        $this->referralId = $referralId;
+        $this->userId = $userId;
         $this->code = $code;
         $this->pointer = $pointer;
         $this->viewCount = $viewCount;
@@ -27,17 +28,17 @@ class Referral
         $this->enabled = $enabled;
     }
 
-    public static function from(int $dbId, int $dbUserId, string $code, string $pointer, int $viewCount, DateTime $creationDate, bool $enabled): Referral
+    public static function from(int $referralId, int $userId, string $code, string $pointer, int $viewCount, DateTimeImmutable $creationDate, bool $enabled): Referral
     {
-        return new Referral($dbId, $dbUserId, $code, $pointer, $viewCount, $creationDate, $enabled);
+        return new Referral($referralId, $userId, $code, $pointer, $viewCount, $creationDate, $enabled);
     }
-    public function getDbId(): int
+    public function getReferralId(): int
     {
-        return $this->dbId;
+        return $this->referralId;
     }
-    public function getDbUserId(): int
+    public function getUserId(): int
     {
-        return $this->dbUserId;
+        return $this->userId;
     }
     public function getCode(): string
     {
@@ -51,7 +52,7 @@ class Referral
     {
         return $this->viewCount;
     }
-    public function getCreationDate(): DateTime
+    public function getCreationDate(): DateTimeImmutable
     {
         return $this->creationDate;
     }

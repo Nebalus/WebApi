@@ -46,6 +46,7 @@ services:
       MYSQL_DBNAME: "main"
       MYSQL_USER: "admin"
       MYSQL_PASSWORD: "12345"
+      PASSWD_HASH_KEY: "kSV7l/ef8mwh7/Iy1BUoSB5DSHzGRjfD[X=DEBb4c-"
       ACCESS_CONTROL_ALLOW_ORIGIN: "*"
     depends_on:
       - mysql

@@ -20,6 +20,9 @@ api.nebalus.dev
   |    |- /update
   |    |- /delete
 
+ref.nebalus.dev
+  |- /?????	 # Ist ein eigender Ref System
+
 www.nebalus.dev
   |- /static      # Is not maintained by the Slim Router but by NGINX
   |    |- /js			# Default JavaScript Ordner
@@ -48,7 +51,7 @@ www.nebalus.dev
   |    |- /
   |- /account
   |    |- /register
-  |    |- /login
+  |    |- /auth
   |    |- /dashboard
   |- /linktree  # Shows the linktree from the owner "Nebalus"
   |- /blogs
@@ -63,4 +66,3 @@ www.nebalus.dev
   |    |- /gfw
   |    |- /cybershot
   |- / 			# Ist die Standard seite
-  |- /ref/?????	 # Ist ein eigender Ref System

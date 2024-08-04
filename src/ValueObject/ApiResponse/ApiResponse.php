@@ -7,7 +7,7 @@ namespace Nebalus\Webapi\ValueObject\ApiResponse;
 use InvalidArgumentException;
 use JsonException;
 
-abstract class AbstractApiResponse implements ApiResponseInterface
+class ApiResponse implements ApiResponseInterface
 {
     private array $payload;
     private int $statusCode;
@@ -31,10 +31,21 @@ abstract class AbstractApiResponse implements ApiResponseInterface
         return new static($payload, $statusCode, $successful);
     }
 
+    public static function fromError(string $errorMessage, int $statusCode): self
+    {
+        $payload = ['error_message' => $errorMessage];
+        return self::fromPayload($payload, $statusCode, false);
+    }
+
+    public static function fromSuccess(array $payload, int $statusCode): self
+    {
+        return self::fromPayload($payload, $statusCode, true);
+    }
+
     /**
      * @throws JsonException
      */
-    public function getMessageAsJson(): string
+    public function getPayloadAsJson(): string
     {
         return json_encode($this->payload, JSON_THROW_ON_ERROR | JSON_NUMERIC_CHECK);
     }

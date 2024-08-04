@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Nebalus\Webapi\Controller\User;
 
-use Nebalus\Webapi\Service\User\UserLoginService;
-use Nebalus\Webapi\ValueObject\ApiResponse\ApiErrorResponse;
+use Nebalus\Webapi\Service\User\UserAuthService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class UserAuthController
 {
-    private UserLoginService $userLoginService;
+    private UserAuthService $userAuthService;
 
-    public function __construct(UserLoginService $userLoginService)
+    public function __construct(UserAuthService $userAuthService)
     {
-        $this->userLoginService = $userLoginService;
+        $this->userAuthService = $userAuthService;
     }
 
-    public function action(Request $request, Response $response, array $args): Response
+    public function authAction(Request $request, Response $response, array $args): Response
     {
-        $params = $request->getParsedBody();
+        $params = $request->getParsedBody() ?? [];
 
-        $responseObject = ApiErrorResponse::from("Authentication failed", 401);
+
+        return $response;
     }
 }

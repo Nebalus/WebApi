@@ -113,7 +113,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `passwd_hash`, `email`, `description`, `is_admin`, `is_enabled`, `creation_date`, `last_time_updated`) VALUES
-    (1, 'Nebalus', 'a1d0c6e83f027327d8461063f4ac58a6', 'nebalus@proton.me', 'Is the default test User', 1, 1, '2024-02-28 21:28:40', '2024-08-03 23:07:10');
+    (1, 'Nebalus', '8f4f01976a87d748982de93eeb6ee35d3fbcd3022d5251d798cfc9bdabe5351e', 'nebalus@proton.me', 'Is the default test User', 1, 1, '2024-02-28 21:28:40', '2024-08-03 23:07:10');
 
 --
 -- Indexes for dumped tables

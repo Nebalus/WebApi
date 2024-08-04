@@ -7,7 +7,7 @@ namespace Nebalus\Webapi\Service\User;
 use Nebalus\Webapi\Repository\MySqlUserRepository;
 use Nebalus\Webapi\Repository\MySqlReferralRepository;
 
-class UserLoginService
+class UserAuthService
 {
     private MySqlUserRepository $mySqlUserRepository;
     public function __construct(
@@ -16,7 +16,7 @@ class UserLoginService
         $this->mySqlUserRepository = $mySqlUserRepository;
     }
 
-    public function action()
+    public function authenticateUser(): void
     {
         $this->mySqlUserRepository->getUserFromId(1);
     }

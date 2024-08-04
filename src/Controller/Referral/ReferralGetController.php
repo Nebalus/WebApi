@@ -6,7 +6,6 @@ namespace Nebalus\Webapi\Controller\Referral;
 
 use Nebalus\Webapi\Exception\ApiException;
 use Nebalus\Webapi\Service\Referral\ReferralGetService;
-use Nebalus\Webapi\ValueObject\ApiResponse\ApiErrorResponse;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -35,7 +34,7 @@ class ReferralGetController
             $apiResponse = ApiErrorResponse::from($e->getMessage(), $e->getCode());
         }
 
-        $response->getBody()->write($apiResponse->getMessageAsJson());
+        $response->getBody()->write($apiResponse->getPayloadAsJson());
 
         return $response->withStatus($apiResponse->getStatusCode());
     }

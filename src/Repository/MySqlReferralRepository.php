@@ -39,14 +39,14 @@ class MySqlReferralRepository
     {
     }
 
-    public function setViewCountByCode(string $code, int $view_count): bool
+    public function setViewCountByCode(string $code, int $viewCount): bool
     {
         $sql = "UPDATE `referrals` SET `view_count`=:view_count WHERE BINARY `code`=:code";
         $stmt = $this->pdo->prepare($sql);
 
         return $stmt->execute([
             "code" => $code,
-            "view_count" => $view_count
+            "view_count" => $viewCount
         ]);
     }
 

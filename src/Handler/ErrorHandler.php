@@ -4,25 +4,32 @@ declare(strict_types=1);
 
 namespace Nebalus\Webapi\Handler;
 
+use JsonException;
 use Monolog\Logger;
-use Nebalus\Webapi\Factory\ResponseFactory;
-use Nebalus\Webapi\ValueObject\ApiResponse\ApiErrorResponse;
+use Nebalus\Webapi\Exception\ApiException;
+use Nebalus\Webapi\ValueObject\ApiResponse\ApiResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\App;
+use Slim\Exception\HttpMethodNotAllowedException;
+use Slim\Exception\HttpNotFoundException;
 use Slim\Interfaces\ErrorHandlerInterface;
 use Throwable;
 
 class ErrorHandler implements ErrorHandlerInterface
 {
-    private ResponseFactory $responseFactory;
+    private App $app;
     private Logger $errorLogger;
 
-    public function __construct(ResponseFactory $responseFactory, Logger $errorLogger)
+    public function __construct(App $app, Logger $errorLogger)
     {
-        $this->responseFactory = $responseFactory;
+        $this->app = $app;
         $this->errorLogger = $errorLogger;
     }
 
+    /**
+     * @throws JsonException
+     */
     public function __invoke(
         Request $request,
         Throwable $exception,
@@ -30,16 +37,32 @@ class ErrorHandler implements ErrorHandlerInterface
         bool $logErrors,
         bool $logErrorDetails
     ): ResponseInterface {
-        $this->errorLogger->error($exception);
+        $errorMessage = "Something went wrong... please contact an admin!";
+        $statusCode = 500;
 
-        $code = $exception->getCode() <= 599 && $exception->getCode() >= 100 ? $exception->getCode() : 500;
+        $exceptionsToHandle = [
+          ApiException::class,
+          HttpNotFoundException::class,
+          HttpMethodNotAllowedException::class
+        ];
+        $isAnExceptionToLog = true;
 
-        $httpResponse = $this->responseFactory->createResponse($code);
+        foreach ($exceptionsToHandle as $exceptionToHandle) {
+            if ($exception instanceof $exceptionToHandle) {
+                $errorMessage = $exception->getMessage();
+                $statusCode = $exception->getCode();
+                $isAnExceptionToLog = false;
+                break;
+            }
+        }
 
-        $apiResponse = ApiErrorResponse::from($exception->getMessage(), $code);
+        if ($isAnExceptionToLog) {
+            $this->errorLogger->error($exception);
+        }
 
-        $httpResponse->getBody()->write($apiResponse->getMessageAsJson());
-
-        return $httpResponse;
+        $apiResponse = ApiResponse::fromError($errorMessage, $statusCode);
+        $slimResponse = $this->app->getResponseFactory()->createResponse();
+        $slimResponse->getBody()->write($apiResponse->getPayloadAsJson());
+        return $slimResponse->withStatus($statusCode);
     }
 }

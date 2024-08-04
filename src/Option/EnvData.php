@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Nebalus\Webapi\Option;
 
 use Monolog\Level;
-use function DI\get;
 
 class EnvData
 {

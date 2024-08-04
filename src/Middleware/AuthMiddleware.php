@@ -4,21 +4,18 @@ declare(strict_types=1);
 
 namespace Nebalus\Webapi\Middleware;
 
-use InvalidArgumentException;
-use Nebalus\Webapi\Exception\ApiException;
+use DateTimeImmutable;
 use Nebalus\Webapi\Option\EnvData;
-use Nebalus\Webapi\ValueObject\AccessLevel;
-use Nebalus\Webapi\ValueObject\ApiResponse\ApiErrorResponse;
+use Nebalus\Webapi\ValueObject\ApiResponse\ApiResponse;
+use Nebalus\Webapi\ValueObject\JwtPayload;
+use Nebalus\Webapi\ValueObject\User\User;
 use Override;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use ReallySimpleJWT\Exception\BuildException;
 use ReallySimpleJWT\Token;
 use Slim\App;
-use Slim\Middleware\RoutingMiddleware;
-use Slim\MiddlewareDispatcher;
 
 class AuthMiddleware implements MiddlewareInterface
 {
@@ -35,38 +32,38 @@ class AuthMiddleware implements MiddlewareInterface
 
     #[Override] public function process(Request $request, RequestHandler $handler): Response
     {
-        if (!$request->hasHeader("Authorization")) {
+        if ($request->hasHeader("Authorization") === false) {
             return $this->abort("The 'Authorization' header is not provided", 401);
         }
 
         $jwt = $request->getHeader("Authorization")[0];
 
         if (empty($jwt)) {
-            return $this->abort("The 'Authorization' header is empty", 401);
+            return $this->abort("The JWT provided in the 'Authorization' header is empty", 401);
         }
 
-        if (!Token::validate($jwt, $this->env->getJwtSecret())) {
-            return $this->abort("The JWT is not valid", 401);
+        if (Token::validate($jwt, $this->env->getJwtSecret()) === false) {
+            return $this->abort("The JWT provided is not valid", 401);
         }
 
-        if (!Token::validateExpiration($jwt)) {
-            return $this->abort("The JWT has expired", 401);
+        if (Token::validateExpiration($jwt) === false) {
+            return $this->abort("The JWT provided has expired", 401);
         }
 
-        $payload = Token::getPayload($jwt);
+        $jwtPayloadArray = Token::getPayload($jwt);
+        $jwtPayload = JwtPayload::fromArray($jwtPayloadArray);
 
-        if (empty($payload["is_admin"]) === false) {
-            $request = $request->withAttribute("is_admin", $payload["is_admin"]);
-        }
+        $request = $request->withAttribute("authenticated_jwt", $jwtPayload);
+        $request = $request->withAttribute("authenticated_user", User::from(42, new DateTimeImmutable(), "testuser"));
 
         return $handler->handle($request);
     }
 
     private function abort(string $errorMessage, int $code): Response
     {
-        $apiResponse = ApiErrorResponse::from($errorMessage, $code);
-        $response = $this->app->getResponseFactory()->createResponse();
-        $response->getBody()->write($apiResponse);
-        return $response;
+        $apiResponse = ApiResponse::fromError($errorMessage, $code);
+        $slimResponse = $this->app->getResponseFactory()->createResponse();
+        $slimResponse->getBody()->write($apiResponse);
+        return $slimResponse;
     }
 }

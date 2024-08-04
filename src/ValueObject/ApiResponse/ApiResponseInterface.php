@@ -11,7 +11,7 @@ interface ApiResponseInterface
     /**
      * @throws JsonException
      */
-    public function getMessageAsJson(): string;
+    public function getPayloadAsJson(): string;
     public function getStatusCode(): int;
     public function isSuccessful(): bool;
 }

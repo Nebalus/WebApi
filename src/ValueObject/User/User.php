@@ -4,38 +4,43 @@ declare(strict_types=1);
 
 namespace Nebalus\Webapi\ValueObject\User;
 
-use DateTime;
+use DateTimeImmutable;
 
 class User
 {
-    private int $dbId;
-    private DateTime $creationDate;
+    private int $userId;
     private string $username;
+    private DateTimeImmutable $creationDate;
 
-    private function __construct(int $dbId, DateTime $creationDate, string $username)
+    private function __construct(int $userId, DateTimeImmutable $creationDate, string $username)
     {
-        $this->dbId = $dbId;
+        $this->userId = $userId;
         $this->creationDate = $creationDate;
         $this->username = $username;
     }
 
-    public static function from(int $dbId, DateTime $creationDate, string $username): self
+    public static function from(int $userId, DateTimeImmutable $creationDate, string $username): self
     {
-        return new User($dbId, $creationDate, $username);
+        return new User($userId, $creationDate, $username);
     }
 
-    public function getDbId(): int
+    public function getUserId(): int
     {
-        return $this->dbId;
-    }
-
-    public function getCreationDate(): DateTime
-    {
-        return $this->creationDate;
+        return $this->userId;
     }
 
     public function getUsername(): string
     {
         return $this->username;
+    }
+
+    public function isAdmin(): bool
+    {
+        return true;
+    }
+
+    public function getCreationDate(): DateTimeImmutable
+    {
+        return $this->creationDate;
     }
 }
