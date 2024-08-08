@@ -9,23 +9,15 @@ use DateTimeImmutable;
 
 class Referral
 {
-    private int $referralId;
-    private int $userId;
-    private string $code;
-    private string $pointer;
-    private int $viewCount;
-    private DateTimeImmutable $creationDate;
-    private bool $enabled;
-
-    private function __construct(int $referralId, int $userId, string $code, string $pointer, int $viewCount, DateTimeImmutable $creationDate, bool $enabled)
-    {
-        $this->referralId = $referralId;
-        $this->userId = $userId;
-        $this->code = $code;
-        $this->pointer = $pointer;
-        $this->viewCount = $viewCount;
-        $this->creationDate = $creationDate;
-        $this->enabled = $enabled;
+    private function __construct(
+        private readonly int $referralId,
+        private readonly int $userId,
+        private readonly string $code,
+        private readonly string $pointer,
+        private readonly int $viewCount,
+        private readonly DateTimeImmutable $creationDate,
+        private readonly bool $enabled
+    ) {
     }
 
     public static function from(int $referralId, int $userId, string $code, string $pointer, int $viewCount, DateTimeImmutable $creationDate, bool $enabled): Referral

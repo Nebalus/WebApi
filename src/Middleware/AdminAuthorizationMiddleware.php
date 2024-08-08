@@ -16,12 +16,9 @@ use Slim\App;
 
 class AdminAuthorizationMiddleware implements MiddlewareInterface
 {
-    private App $app;
-
     public function __construct(
-        App $app,
+        private readonly App $app,
     ) {
-        $this->app = $app;
     }
 
     /**

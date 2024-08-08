@@ -12,11 +12,9 @@ use PDO;
 
 class MySqlReferralRepository
 {
-    private PDO $pdo;
-
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo = $pdo;
+    public function __construct(
+        private readonly PDO $pdo
+    ) {
     }
 
     public function createReferral(string $code, string $pointer)

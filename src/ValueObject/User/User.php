@@ -8,15 +8,12 @@ use DateTimeImmutable;
 
 class User
 {
-    private int $userId;
-    private string $username;
-    private DateTimeImmutable $creationDate;
 
-    private function __construct(int $userId, DateTimeImmutable $creationDate, string $username)
-    {
-        $this->userId = $userId;
-        $this->creationDate = $creationDate;
-        $this->username = $username;
+    private function __construct(
+        private readonly int $userId,
+        private readonly DateTimeImmutable $creationDate,
+        private readonly string $username
+    ) {
     }
 
     public static function from(int $userId, DateTimeImmutable $creationDate, string $username): self

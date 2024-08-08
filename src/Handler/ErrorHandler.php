@@ -18,13 +18,10 @@ use Throwable;
 
 class ErrorHandler implements ErrorHandlerInterface
 {
-    private App $app;
-    private Logger $errorLogger;
-
-    public function __construct(App $app, Logger $errorLogger)
-    {
-        $this->app = $app;
-        $this->errorLogger = $errorLogger;
+    public function __construct(
+        private readonly App $app,
+        private readonly Logger $errorLogger
+    ) {
     }
 
     /**

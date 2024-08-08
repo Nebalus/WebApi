@@ -11,14 +11,10 @@ use Nebalus\Webapi\View\ReferralView;
 
 class ReferralGetService
 {
-    private MySqlReferralRepository $mySqlReferralRepository;
-    private ReferralView $referralView;
     public function __construct(
-        MySqlReferralRepository $mySqlReferralRepository,
-        ReferralView $referralView,
+        private readonly MySqlReferralRepository $mySqlReferralRepository,
+        private readonly ReferralView $referralView,
     ) {
-        $this->mySqlReferralRepository = $mySqlReferralRepository;
-        $this->referralView = $referralView;
     }
 
     public function action(string $code): ApiResponseInterface

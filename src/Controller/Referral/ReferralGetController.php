@@ -11,12 +11,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ReferralGetController
 {
-    private ReferralGetService $referralGetService;
-
     public function __construct(
-        ReferralGetService $referralGetService,
+        private readonly ReferralGetService $referralGetService,
     ) {
-        $this->referralGetService = $referralGetService;
     }
 
     public function action(Request $request, Response $response, array $args): Response

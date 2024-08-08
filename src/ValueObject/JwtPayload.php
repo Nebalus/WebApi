@@ -4,24 +4,13 @@ namespace Nebalus\Webapi\ValueObject;
 
 class JwtPayload
 {
-    private int $userId;
-    private bool $isAdmin;
-    private string $issuer;
-    private int $expiresAtTimestamp;
-    private int $issuedAtTimestamp;
-
     private function __construct(
-        int $userId,
-        bool $isAdmin,
-        string $issuer,
-        int $expiresAtTimestamp,
-        int $issuedAtTimestamp
+        private readonly int $userId,
+        private readonly bool $isAdmin,
+        private readonly string $issuer,
+        private readonly int $expiresAtTimestamp,
+        private readonly int $issuedAtTimestamp
     ) {
-        $this->userId = $userId;
-        $this->isAdmin = $isAdmin;
-        $this->issuer = $issuer;
-        $this->expiresAtTimestamp = $expiresAtTimestamp;
-        $this->issuedAtTimestamp = $issuedAtTimestamp;
     }
 
     public static function fromArray(array $payload): self

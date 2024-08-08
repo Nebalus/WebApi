@@ -19,15 +19,10 @@ use Slim\App;
 
 class AuthMiddleware implements MiddlewareInterface
 {
-    private App $app;
-    private EnvData $env;
-
     public function __construct(
-        App $app,
-        EnvData $env
+        private readonly App $app,
+        private readonly EnvData $env
     ) {
-        $this->app = $app;
-        $this->env = $env;
     }
 
     #[Override] public function process(Request $request, RequestHandler $handler): Response

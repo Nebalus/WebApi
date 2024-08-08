@@ -9,15 +9,11 @@ use JsonException;
 
 class ApiResponse implements ApiResponseInterface
 {
-    private array $payload;
-    private int $statusCode;
-    private bool $successful;
-
-    private function __construct(array $payload, int $statusCode, bool $successful)
-    {
-        $this->payload = $payload;
-        $this->statusCode = $statusCode;
-        $this->successful = $successful;
+    private function __construct(
+        private readonly array $payload,
+        private readonly int $statusCode,
+        private readonly bool $successful
+    ) {
     }
 
     protected static function fromPayload(array $payload, int $statusCode, bool $successful): static

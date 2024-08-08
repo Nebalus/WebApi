@@ -10,11 +10,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class UserAuthController
 {
-    private UserAuthService $userAuthService;
-
-    public function __construct(UserAuthService $userAuthService)
-    {
-        $this->userAuthService = $userAuthService;
+    public function __construct(
+        private readonly UserAuthService $userAuthService
+    ) {
     }
 
     public function authAction(Request $request, Response $response, array $args): Response

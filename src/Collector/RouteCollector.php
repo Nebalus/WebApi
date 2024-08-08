@@ -14,13 +14,10 @@ use Slim\Routing\RouteCollectorProxy;
 
 class RouteCollector
 {
-    private App $app;
-    private EnvData $env;
-
-    public function __construct(App $app, EnvData $env)
-    {
-        $this->app = $app;
-        $this->env = $env;
+    public function __construct(
+        private readonly App $app,
+        private readonly EnvData $env
+    ) {
     }
 
     public function init(): void

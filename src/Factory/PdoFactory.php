@@ -10,10 +10,9 @@ use PDOException;
 
 class PdoFactory
 {
-    private EnvData $env;
-    public function __construct(EnvData $env)
-    {
-        $this->env = $env;
+    public function __construct(
+        private readonly EnvData $env
+    ) {
     }
 
     /**

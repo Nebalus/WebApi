@@ -11,10 +11,9 @@ use Nebalus\Webapi\Option\EnvData;
 
 class LoggerFactory
 {
-    private EnvData $env;
-    public function __construct(EnvData $env)
-    {
-        $this->env = $env;
+    public function __construct(
+        private readonly EnvData $env
+    ) {
     }
 
     public function build(): Logger

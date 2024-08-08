@@ -14,26 +14,24 @@ use Slim\App;
 
 class CorsMiddleware implements MiddlewareInterface
 {
-    private App $app;
-    private EnvData $env;
-
     public function __construct(
-        App $app,
-        EnvData $env
+        private readonly App $app,
+        private readonly EnvData $env
     ) {
-        $this->app = $app;
-        $this->env = $env;
     }
 
     #[Override] public function process(Request $request, RequestHandler $handler): Response
     {
         if ($request->getMethod() === 'OPTIONS') {
-            $slimResponse = $this->app->getResponseFactory()->createResponse();
-        } else {
-            $slimResponse = $handler->handle($request);
+            return $this->addCorsHeaders($this->app->getResponseFactory()->createResponse());
         }
 
-        return $slimResponse
+        $this->addCorsHeaders($handler->handle($request));
+    }
+
+    private function addCorsHeaders(Response $slimResponse): Response
+    {
+        $slimResponse
             ->withHeader('Access-Control-Allow-Origin', $this->env->getAccessControlAllowOrigin())
             ->withHeader('Access-Control-Allow-Methods', 'Authorization')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
