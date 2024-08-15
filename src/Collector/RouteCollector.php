@@ -42,8 +42,9 @@ class RouteCollector
         $this->app->group("/admin", function (RouteCollectorProxy $group) {
         });
 
+        $this->app->map(["POST"], "/auth", [UserAuthController::class, "authAction"]);
+        
         $this->app->group("/user", function (RouteCollectorProxy $group) {
-            $group->map(["POST"], "/auth", [UserAuthController::class, "authAction"]);
 //            $group->group("/{username}", function (RouteCollectorProxy $group) {
 //                $group->map(["GET"], "", [TempController::class, "action"])->add(AuthMiddleware::class);
 //                $group->map(["PATCH"], "", [TempController::class, "action"])->add(AuthMiddleware::class);
